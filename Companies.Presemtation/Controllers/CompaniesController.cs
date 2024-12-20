@@ -1,4 +1,5 @@
 ﻿using Companies.Shared.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 
@@ -23,6 +24,7 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Authorize]
     public async Task<ActionResult<CompanyDto>> GetCompany(int id) =>
             Ok(await serviceManager.CompanyService.GetCompanyAsync(id));
 
