@@ -22,4 +22,7 @@ public class ApplicationUser : IdentityUser
 
     //Navigation Property
     public Company? Company { get; set; }
+
+    public string? RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiration {  get; set; }
 }
