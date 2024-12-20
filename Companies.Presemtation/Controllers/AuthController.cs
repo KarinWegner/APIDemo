@@ -27,7 +27,9 @@ namespace Companies.Presemtation.Controllers
         {
             if (!await _serviceManager.AuthService.ValidateUserAsync(authDto)) return Unauthorized();
 
-            return Ok(new {Token = await _serviceManager.AuthService.CreateTokenAsync()});
+            TokenDto token = await _serviceManager.AuthService.CreateTokenAsync(expireTime: true);
+
+            return Ok(token);
         }
     }
 }

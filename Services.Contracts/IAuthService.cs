@@ -10,7 +10,7 @@ namespace Services.Contracts
 {
     public interface IAuthService
     {
-        Task<string> CreateTokenAsync();
+        Task<TokenDto> CreateTokenAsync(bool expireTime);
         Task<IdentityResult> RegisterUserAsync(UserForRegistrationDto registrationDto);
         Task<bool> ValidateUserAsync(UserForAuthDto authDto);
     }

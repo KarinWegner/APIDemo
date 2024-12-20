@@ -31,7 +31,7 @@ namespace Companies.Services
             this.config = config;
         }
 
-        public async Task<string> CreateTokenAsync()
+        public async Task<TokenDto> CreateTokenAsync(bool expireTime)
         {
             SigningCredentials signing = GetSigningCredentials();
             IEnumerable<Claim> claims = await GetClaimsAsync();
