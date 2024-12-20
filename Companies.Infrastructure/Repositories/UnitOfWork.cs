@@ -14,11 +14,11 @@ public class UnitOfWork : IUnitOfWork
 
     //Add More Repos
 
-    public UnitOfWork(CompaniesContext context)
+    public UnitOfWork(CompaniesContext context, Lazy<ICompanyRepository> companyrepository, Lazy<IEmployeeRepository> employeerepository)
     {
         this.context = context;
-        companyRepository = new Lazy<ICompanyRepository>(() => new CompanyRepository(context));
-        employeeRepository = new Lazy<IEmployeeRepository>(() => new EmployeeRepository(context));
+        companyRepository = companyrepository;
+        employeeRepository = employeerepository;
     }
 
     public async Task CompleteASync()
