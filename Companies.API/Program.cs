@@ -9,6 +9,9 @@ using Companies.Services;
 using Companies.Presemtation;
 using Domain.Models.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 namespace Companies.API
@@ -38,7 +41,31 @@ namespace Companies.API
             builder.Services.ConfigureServiceLayerServices();
             builder.Services.ConfigureRepositories();
 
-            builder.Services.AddAuthentication();
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    var secretKey = builder.Configuration["secretkey"];
+                    ArgumentNullException.ThrowIfNull(nameof(secretKey));
+
+                    var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+                    ArgumentNullException.ThrowIfNull(nameof(jwtSettings));
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = jwtSettings["Issuer"],
+                        ValidAudience = jwtSettings["Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
+                    };
+                });
+
+
             builder.Services.AddIdentityCore<ApplicationUser>(opt =>
             {
                 opt.Password.RequireLowercase = false;

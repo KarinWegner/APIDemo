@@ -23,6 +23,12 @@ namespace Companies.Services
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
+        public Task<string> CreateTokenAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IdentityResult> RegisterUserAsync(UserForRegistrationDto registrationDto)
         {
             if (registrationDto is null)   
@@ -41,6 +47,16 @@ namespace Companies.Services
                 await _userManager.AddToRoleAsync(user, registrationDto.Role);
 
             return result;
+        }
+
+        public async Task<bool> ValidateUserAsync(UserForAuthDto authDto)
+        {
+            if (authDto is null)
+                throw new ArgumentNullException(nameof(authDto));
+
+            var user = await _userManager.FindByNameAsync(authDto.UserName);
+
+            return user != null && await _userManager.CheckPasswordAsync(user, authDto.Password);
         }
     }
 }
