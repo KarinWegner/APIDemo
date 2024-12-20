@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Companies.Infrastructure.Data
 {
-    public class CompaniesContext : IdentityDbContext<Employee, IdentityRole, string>
+    public class CompaniesContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public CompaniesContext(DbContextOptions<CompaniesContext> options)
             : base(options)

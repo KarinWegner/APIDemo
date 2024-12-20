@@ -45,11 +45,11 @@ public static class SeedData
         return faker.Generate(nrOfCompanies);
     }
 
-    private static ICollection<Employee> GenerateEmployees(int nrOfEmplyees)
+    private static ICollection<ApplicationUser> GenerateEmployees(int nrOfEmplyees)
     {
         string[] positions = ["Developer", "Tester", "Manager"];
 
-        var faker = new Faker<Employee>("sv").Rules((f, e) =>
+        var faker = new Faker<ApplicationUser>("sv").Rules((f, e) =>
         {
             e.Name = f.Person.FullName;
             e.Age = f.Random.Int(min: 18, max: 70);

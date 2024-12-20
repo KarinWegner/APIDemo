@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace Domain.Contracts;
 public interface IEmployeeRepository
 {
-    void Update(Employee employee);
-    void Create(Employee employee);
-    void Delete(Employee employee);
-    Task<IEnumerable<Employee>> GetEmployeesAsync(int companyId, bool trackChanges = false);
-    Task<Employee?> GetEmployeeAsync(int companyId, int employeeId, bool trackChanges = false);
+    void Update(ApplicationUser employee);
+    void Create(ApplicationUser employee);
+    void Delete(ApplicationUser employee);
+    Task<IEnumerable<ApplicationUser>> GetEmployeesAsync(int companyId, bool trackChanges = false);
+    Task<ApplicationUser?> GetEmployeeAsync(int companyId, int employeeId, bool trackChanges = false);
 }

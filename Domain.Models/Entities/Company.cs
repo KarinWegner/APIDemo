@@ -17,5 +17,5 @@ public class Company
     public string? Country { get; set; }
 
     //Navigation property
-    public ICollection<Employee>? Employees { get; set; }
+    public ICollection<ApplicationUser>? Employees { get; set; }
 }
