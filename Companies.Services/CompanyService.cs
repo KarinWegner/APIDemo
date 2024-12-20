@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Companies.API.DTOs;
+using Companies.Shared.DTOs;
 using Domain.Contracts;
 using Domain.Models.Entities;
 using Services.Contracts;

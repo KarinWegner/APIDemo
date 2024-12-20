@@ -1,4 +1,4 @@
-﻿using Companies.API.DTOs;
+﻿using Companies.Shared.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;

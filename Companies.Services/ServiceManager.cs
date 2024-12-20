@@ -12,13 +12,17 @@ public class ServiceManager : IServiceManager
 {
     private readonly Lazy<ICompanyService> companyService;
     private readonly Lazy<IEmployeeService> employeeService;
+    private readonly Lazy<IAuthService> authService;
 
     public ICompanyService CompanyService => companyService.Value;
     public IEmployeeService EmployeeService => employeeService.Value;
 
-    public ServiceManager(Lazy<ICompanyService> companyservice, Lazy<IEmployeeService> employeeservice)
+    public IAuthService AuthService => authService.Value;
+
+    public ServiceManager(Lazy<ICompanyService> companyservice, Lazy<IEmployeeService> employeeservice, Lazy<IAuthService> authservice)
     {
         companyService = companyservice;
         employeeService = employeeservice;
+        authService = authservice;
     }
 }

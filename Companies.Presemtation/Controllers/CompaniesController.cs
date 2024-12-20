@@ -1,4 +1,4 @@
-﻿using Companies.API.DTOs;
+﻿using Companies.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 

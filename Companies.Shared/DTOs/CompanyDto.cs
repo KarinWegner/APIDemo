@@ -1,7 +1,6 @@
-﻿using Companies.Shared.DTOs;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Companies.API.DTOs;
+namespace Companies.Shared.DTOs;
 
 public record CompanyDto
 {
@@ -11,4 +10,4 @@ public record CompanyDto
     public IEnumerable<EmployeeDto>? Employees { get; init; }
 
 }
-     
+

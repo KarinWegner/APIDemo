@@ -24,9 +24,11 @@ public static class ServiceExtensions
         services.AddScoped<IServiceManager, ServiceManager>();
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<IAuthService, AuthService>();
        // services.AddScoped(provider => new Lazy<ICompanyService>(() => provider.GetRequiredService<ICompanyService>()));
         services.AddLazy<IEmployeeService>();
         services.AddLazy<ICompanyService>();
+        services.AddLazy<IAuthService>();
     }
     public static void ConfigureRepositories(this IServiceCollection services)
     {

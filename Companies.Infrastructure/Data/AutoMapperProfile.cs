@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Companies.API.DTOs;
 using Companies.Shared.DTOs;
 using Domain.Models.Entities;
 
@@ -19,5 +18,7 @@ public class AutoMapperProfile : Profile
 
         CreateMap<ApplicationUser, EmployeeDto>().ReverseMap();
         CreateMap<ApplicationUser, EmployeeUpdateDto>().ReverseMap();
+
+        CreateMap<UserForRegistrationDto, ApplicationUser>();
     }
 }
