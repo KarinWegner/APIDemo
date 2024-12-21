@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,7 +38,17 @@ namespace Companies.Services
             IEnumerable<Claim> claims = await GetClaimsAsync();
             JwtSecurityToken tokenOptions = GenerateTokenOptions(signing, claims);
 
+            user!.RefreshToken = GenerateRefreshToken();
+
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        }
+
+        private string? GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+            return Convert.ToBase64String(randomNumber)
         }
 
         private JwtSecurityToken GenerateTokenOptions(SigningCredentials signing, IEnumerable<Claim> claims)
