@@ -16,12 +16,11 @@ namespace Companies.Presemtation.Controllers
         }
         
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Authenticate(UserForAuthDto authDto)
+        [HttpPost("refresh")]
+        public async Task<ActionResult> Authenticate(TokenDto token)
         {
-            if (!await authService.ValidateUserAsync(authDto)) return Unauthorized();
-
-            return Ok(new { Token = await _serviceManager.AuthService.CreateTokenAsync() });
+            TokenDto tokenDto = await authService.RefreshTokenAsync(token);
+            return Ok(tokenDto);
         }
     }
 }
