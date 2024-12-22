@@ -41,30 +41,9 @@ namespace Companies.API
             builder.Services.ConfigureServiceLayerServices();
             builder.Services.ConfigureRepositories();
 
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(options =>
-                {
-                    var secretKey = builder.Configuration["secretkey"];
-                    ArgumentNullException.ThrowIfNull(nameof(secretKey));
+            builder.Services.ConfigureJwt(builder.Configuration);
 
-                    var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-                    ArgumentNullException.ThrowIfNull(nameof(jwtSettings));
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidateLifetime = true,
-                        ValidIssuer = jwtSettings["Issuer"],
-                        ValidAudience = jwtSettings["Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey!))
-                    };
-                });
-
+            
 
             builder.Services.AddIdentityCore<ApplicationUser>(opt =>
             {
