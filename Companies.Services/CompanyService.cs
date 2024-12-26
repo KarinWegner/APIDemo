@@ -2,6 +2,7 @@
 using Companies.Shared.DTOs;
 using Domain.Contracts;
 using Domain.Models.Entities;
+using Domain.Models.Exceptions;
 using Services.Contracts;
 
 namespace Companies.Services;
@@ -28,7 +29,7 @@ public class CompanyService : ICompanyService
 
         if (company == null)
         {
-            //ToDo: Fix later
+            throw new CompanyNotFoundException(id);
         }
 
         return mapper.Map<CompanyDto>(company);

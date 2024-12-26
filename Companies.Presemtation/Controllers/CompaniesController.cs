@@ -24,7 +24,8 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [Authorize]
+   // [Authorize]
+    [AllowAnonymous]
     public async Task<ActionResult<CompanyDto>> GetCompany(int id) =>
             Ok(await serviceManager.CompanyService.GetCompanyAsync(id));
 
