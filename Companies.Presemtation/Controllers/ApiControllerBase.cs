@@ -3,14 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Companies.Presemtation.Controllers
-{    
-    public class ApiController : ControllerBase
+{
+    public class ApiControllerBase : ControllerBase
     {
         [NonAction]
         public ActionResult ProcessError(ApiBaseResponse baseResponse)
         {
             return baseResponse switch
-            { 
+            {
                 ApiNotFoundResponse => NotFound(Results.Problem
                 (
                     detail: ((ApiNotFoundResponse)baseResponse).Message,
@@ -18,7 +18,7 @@ namespace Companies.Presemtation.Controllers
                     title: "Not Found",
                     instance: HttpContext.Request.Path
                 )),
-                 _=>throw new NotImplementedException()
+                _ => throw new NotImplementedException()
             };
 
         }

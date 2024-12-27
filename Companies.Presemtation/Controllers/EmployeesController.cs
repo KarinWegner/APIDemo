@@ -11,7 +11,7 @@ namespace Companies.Presemtation.Controllers
 {
     [Route("api/companies/{companyId}/employees")]
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : ApiControllerBase
     {
         // private readonly CompaniesContext _context;
         private readonly IMapper _mapper;
