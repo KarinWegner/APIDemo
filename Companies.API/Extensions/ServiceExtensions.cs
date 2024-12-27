@@ -1,10 +1,12 @@
-﻿using System.Text;
+﻿using System.Security.Cryptography.Xml;
+using System.Text;
 using Companies.Infrastructure.Repositories;
 using Companies.Services;
 using Domain.Contracts;
 using Domain.Models.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Services.Contracts;
 
 namespace Companies.API.Extensions;
@@ -42,6 +44,35 @@ public static class ServiceExtensions
         services.AddLazy<IEmployeeRepository>();
         services.AddLazy<ICompanyRepository>();
     }
+
+    public static void ConfigureOpenApi(this IServiceCollection services) =>
+        services.AddEndpointsApiExplorer()
+        .AddSwaggerGen(setup =>
+        {
+            setup.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Place to add JWT with Bearer",
+                Name = "Authorization",
+                Type = SecuritySchemeType.Http,
+                Scheme = "Bearer"
+            });
+
+            setup.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference= new OpenApiReference
+                        {
+                            Id="Bearer",
+                            Type=ReferenceType.SecurityScheme
+                        }
+                    },
+                    new List<string>()
+                }
+            });
+        });
 
     public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
     {
