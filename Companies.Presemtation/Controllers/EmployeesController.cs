@@ -2,8 +2,10 @@
 using AutoMapper;
 using Companies.Shared.DTOs;
 using Domain.Contracts;
+using Domain.Models.Responses;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Services.Contracts;
 
 namespace Companies.Presemtation.Controllers
 {
@@ -14,26 +16,26 @@ namespace Companies.Presemtation.Controllers
         // private readonly CompaniesContext _context;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork uow;
+        private readonly IServiceManager serviceManager;
 
-        public EmployeesController(IMapper mapper, IUnitOfWork uow)
+        public EmployeesController(IMapper mapper, IUnitOfWork uow, IServiceManager serviceManager)
         {
             //  _context = context;
             _mapper = mapper;
             this.uow = uow;
+            this.serviceManager = serviceManager;
         }
 
         // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployee(int companyId)
         {
-            var companyExist = await uow.CompanyRepository.CompanyExistsAsync(companyId);
+            ApiBaseResponse response = await serviceManager.EmployeeService.GetEmployeesAsync(companyId);
 
-            if (!companyExist) return NotFound();
 
-            var employees = await uow.EmployeeRepository.GetEmployeesAsync(companyId);
-            var employeesDtos = _mapper.Map<IEnumerable<EmployeeDto>>(employees);
-
-            return Ok(employeesDtos);
+            return response.Success ?
+                Ok(response.GetOkResult<IEnumerable<EmployeeDto>>()) :
+                ProcessError(response);
         }
 
         // GET: api/Employees/5
