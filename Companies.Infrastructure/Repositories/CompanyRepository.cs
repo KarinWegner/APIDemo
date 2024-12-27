@@ -1,4 +1,5 @@
 ﻿using Companies.Infrastructure.Data;
+using Companies.Shared.Request;
 using Domain.Contracts;
 using Domain.Models.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +16,12 @@ public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
         return await FindByCondition(c => c.Id.Equals(id), trackChanges).FirstOrDefaultAsync();
     }
 
-    public async Task<IEnumerable<Company>> GetCompaniesAsync(bool includeEmployees = false, bool trackChanges = false)
+    public async Task<PagedList<Company>> GetCompaniesAsync(CompanyRequestParams requestParams, bool trackChanges = false)
     {
-        return includeEmployees ? await FindAll(trackChanges).Include(c => c.Employees).ToListAsync() :
-                                  await FindAll(trackChanges).ToListAsync();
+        var companies = requestParams.IncludeEmployees ?  FindAll(trackChanges).Include(c => c.Employees) :
+                                                          FindAll(trackChanges);
+
+        return await PagedList<Company>.CreateAsync(companies, requestParams.PageNumber, requestParams.PageSize);
     }
 
     public async Task<bool> CompanyExistsAsync(int id)
