@@ -17,13 +17,13 @@ namespace Companies.Presemtation.ControllersForTest
     [ApiController]
     public class RepositoryController : ControllerBase
     {
-        private readonly IEmployeeRepository employeeRepo;
+        private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public RepositoryController(IEmployeeRepository employeeRepo, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public RepositoryController(IUnitOfWork uow, IMapper mapper, UserManager<ApplicationUser> userManager)
         {
-            this.employeeRepo = employeeRepo;
+            this.uow = uow;
             this.mapper = mapper;
             this.userManager = userManager;
         }
@@ -36,7 +36,7 @@ namespace Companies.Presemtation.ControllersForTest
             var user = await userManager.GetUserAsync(User);
             if(user is null) throw new ArgumentNullException(nameof(user));
 
-            var employees = await employeeRepo.GetEmployeesAsync(id);
+            var employees = await uow.EmployeeRepository.GetEmployeesAsync(id);
 
             var dtos = mapper.Map<IEnumerable<EmployeeDto>>(employees);
             return Ok(dtos);
