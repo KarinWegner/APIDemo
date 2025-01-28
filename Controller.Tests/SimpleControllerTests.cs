@@ -1,6 +1,8 @@
 using Companies.Presemtation.Controllers;
 using Controller.Tests.Extensions;
+using Domain.Models.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System.Security.Claims;

@@ -1,7 +1,10 @@
-﻿namespace Services.Contracts;
+﻿using Services.Contracts.ContractsForTests;
+
+namespace Services.Contracts;
 public interface IServiceManager
 {
     ICompanyService CompanyService { get; }
     IEmployeeService EmployeeService { get; }
     IAuthService AuthService { get; }
+    IUserService UserService { get; }
 }

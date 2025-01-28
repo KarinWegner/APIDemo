@@ -31,6 +31,7 @@ public static class ServiceExtensions
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<IEmployeeService, EmployeeService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserService, UserService>();
        // services.AddScoped(provider => new Lazy<ICompanyService>(() => provider.GetRequiredService<ICompanyService>()));
         services.AddLazy<IEmployeeService>();
         services.AddLazy<ICompanyService>();
