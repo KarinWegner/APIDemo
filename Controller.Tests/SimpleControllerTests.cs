@@ -1,4 +1,5 @@
 using Companies.Presemtation.Controllers;
+using Controller.Tests.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -43,21 +44,21 @@ namespace Controller.Tests
             Assert.IsType<BadRequestObjectResult>(resultType);
             Assert.Equal("Is not auth", resultType.Value);
         }
-
         [Fact]
         public async Task GetCompany_IfNotAuth_ShouldReturn400BadRequest2()
         {
-            var mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
-            mockClaimsPrincipal.SetupGet(x => x.Identity.IsAuthenticated).Returns(false);
+           // var mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
+           // mockClaimsPrincipal.SetupGet(x => x.Identity.IsAuthenticated).Returns(false);
 
             var sut = new SimpleController();
-            sut.ControllerContext = new ControllerContext
-            {
-                HttpContext = new DefaultHttpContext()
-                {
-                    User = mockClaimsPrincipal.Object,
-                }
-            };
+            sut.SetUserIsAuth(false);
+            //sut.ControllerContext = new ControllerContext
+            //{
+            //    HttpContext = new DefaultHttpContext()
+            //    {
+            //        User = mockClaimsPrincipal.Object,
+            //    }
+            //};
 
             var result= await sut.GetCompany();
             var resultType = result.Result as BadRequestObjectResult;
@@ -65,5 +66,19 @@ namespace Controller.Tests
             Assert.IsType<BadRequestObjectResult>(resultType);
             Assert.Equal(StatusCodes.Status400BadRequest, resultType.StatusCode);
         }
+
+        [Fact]
+        public async Task GetCompany_IfAuth_ShouldReturn200OK()
+        {
+            var sut = new SimpleController();
+            sut.SetUserIsAuth(true);
+         
+
+            var result = await sut.GetCompany();
+            var resultType = result.Result as OkObjectResult;
+
+            Assert.IsType<OkObjectResult>(resultType);
+        }
+
     }
 }
