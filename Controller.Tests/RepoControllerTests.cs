@@ -1,4 +1,7 @@
-﻿using Companies.Presemtation.ControllersForTest;
+﻿using AutoMapper;
+using Companies.Infrastructure.Data;
+using Companies.Presemtation.ControllersForTest;
+using Companies.Shared.DTOs;
 using Domain.Contracts;
 using Domain.Models.Entities;
 using Microsoft.AspNetCore.Http;
@@ -20,7 +23,12 @@ namespace Controller.Tests
         public RepoControllerTests()
         {
              mockRepo = new Mock<IEmployeeRepository>();
-             sut = new RepositoryController(mockRepo.Object);
+            var mapper = new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<AutoMapperProfile>();
+            }));
+
+             sut = new RepositoryController(mockRepo.Object, mapper);
         }
         [Fact]
         public async Task GetEmployees_ShouldReturnAllEmployees()
@@ -34,7 +42,7 @@ namespace Controller.Tests
 
             //Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result.Result);
-            var items = Assert.IsType<List<ApplicationUser>>(okObjectResult.Value);
+            var items = Assert.IsType<List<EmployeeDto>>(okObjectResult.Value);
            
 
             Assert.Equal(items.Count, users.Count);

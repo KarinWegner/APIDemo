@@ -1,4 +1,5 @@
-﻿using Companies.Shared.DTOs;
+﻿using AutoMapper;
+using Companies.Shared.DTOs;
 using Companies.Shared.Request;
 using Domain.Contracts;
 using Domain.Models.Entities;
@@ -15,16 +16,20 @@ namespace Companies.Presemtation.ControllersForTest
     public class RepositoryController : ControllerBase
     {
         private readonly IEmployeeRepository employeeRepo;
+        private readonly IMapper mapper;
 
-        public RepositoryController(IEmployeeRepository employeeRepo)
+        public RepositoryController(IEmployeeRepository employeeRepo, IMapper mapper)
         {
             this.employeeRepo = employeeRepo;
+            this.mapper = mapper;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApplicationUser>>> GetEmployees(int id)
+        public async Task<ActionResult<IEnumerable<EmployeeDto>>> GetEmployees(int id)
         {
             var employees = await employeeRepo.GetEmployeesAsync(id);
-            return Ok(employees);
+
+            var dtos = mapper.Map<IEnumerable<EmployeeDto>>(employees);
+            return Ok(dtos);
         }
     }
 }
