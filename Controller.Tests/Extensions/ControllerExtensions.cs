@@ -14,7 +14,7 @@ namespace Controller.Tests.Extensions
         public static void SetUserIsAuth(this ControllerBase controller, bool isAuth, string role = "")
         {
             var identity = isAuth
-                ? new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "TestUser") }, "TestAuthType")
+                ? new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "TestUserId") }, "TestAuthType")
                 : new ClaimsIdentity();
 
             if (string.IsNullOrEmpty(role))
