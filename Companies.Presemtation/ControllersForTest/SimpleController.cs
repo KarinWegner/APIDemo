@@ -10,6 +10,7 @@ namespace Companies.Presemtation.Controllers;
 
 [Route("api/simple")]
 [ApiController]
+[Authorize]
 public class SimpleController : ControllerBase
 {
    
@@ -21,9 +22,16 @@ public class SimpleController : ControllerBase
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CompanyDto>>> GetCompany()
-    {     
+    {
+        if (User?.Identity?.IsAuthenticated ?? false)
+        {
+            return Ok("is auth");
+        }
+        else
+        {
+        return BadRequest("Is not auth");
 
-        return Ok();
+        }
     }
 }
 
