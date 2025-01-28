@@ -8,16 +8,16 @@ namespace Controller.Tests
     public class SimpleControllerTests
     {
         [Fact]
-        public async void GetCompany_Should_Return200OK()
+        public async void GetCompany_Should_Return400()
         {
             //sut=system under test
             var sut = new SimpleController();
 
             var res=await sut.GetCompany();
-            var resultType = res.Result as OkObjectResult;
+            var resultType = res.Result as BadRequestObjectResult;
 
-            Assert.IsType<OkObjectResult>(resultType);
-            Assert.Equal(StatusCodes.Status200OK, resultType.StatusCode);
+            Assert.IsType<BadRequestObjectResult>(resultType);
+            Assert.Equal(StatusCodes.Status400BadRequest, resultType.StatusCode);
 
         }
 
