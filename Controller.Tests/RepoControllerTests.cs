@@ -5,10 +5,12 @@ using Companies.Shared.DTOs;
 using Controller.Tests.Extensions;
 using Domain.Contracts;
 using Domain.Models.Entities;
+using Domain.Models.Responses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,27 +24,42 @@ namespace Controller.Tests
     {
         private RepositoryController sut;
         private Mock<UserManager<ApplicationUser>> userManager;
-        private Mock<IUnitOfWork> mockUoW;
+        private Mock<IServiceManager> serviceManagerMock;
+        private Mapper mapper;
         private const string userName = "Kalle";
 
         public RepoControllerTests()
         {
-             mockUoW = new Mock<IUnitOfWork>();
-
-            var mapper = new Mapper(new MapperConfiguration(cfg =>
+            serviceManagerMock = new Mock<IServiceManager>();
+            mapper = new Mapper(new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<AutoMapperProfile>();
             }));
 
             var mockUserStore = new Mock<IUserStore<ApplicationUser>>();
             userManager = new Mock<UserManager<ApplicationUser>>(mockUserStore.Object, null, null, null, null, null, null,null, null);
-             sut = new RepositoryController(mockUoW.Object, mapper, userManager.Object);
+             sut = new RepositoryController(serviceManagerMock.Object, mapper, userManager.Object);
         }
+
+        //[Fact]
+        //public void AutoMapper_Configuration_ShouldBeValid()
+        //{
+        //    var config = new MapperConfiguration(cfg =>
+        //    {
+        //        cfg.AddProfile<AutoMapperProfile>();
+        //    });
+
+        //    config.AssertConfigurationIsValid();
+        //}
+
         [Fact]
         public async Task GetEmployees_ShouldReturnAllEmployees()
         {
             var users = GetUsers();
-            mockUoW.Setup(x => x.EmployeeRepository.GetEmployeesAsync(It.IsIn<int>(2,3), It.IsAny<bool>())).ReturnsAsync(users);
+            var dtos = mapper.Map<IEnumerable<EmployeeDto>>(users);
+            ApiBaseResponse baseResponse = new ApiOkRepsonse<IEnumerable<EmployeeDto>>(dtos);
+
+            serviceManagerMock.Setup(x => x.EmployeeService.GetEmployeesAsync(It.IsIn<int>(2,3))).ReturnsAsync(baseResponse);
             userManager.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new ApplicationUser { UserName = userName });
 
             sut.SetUserIsAuth(true);

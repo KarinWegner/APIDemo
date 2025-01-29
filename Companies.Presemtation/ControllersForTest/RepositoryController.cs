@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Companies.Presemtation.Controllers;
 using Companies.Shared.DTOs;
 using Companies.Shared.Request;
 using Domain.Contracts;
@@ -15,15 +16,16 @@ namespace Companies.Presemtation.ControllersForTest
 {
     [Route("api/repo/{id}")]
     [ApiController]
-    public class RepositoryController : ControllerBase
+    public class RepositoryController : ApiControllerBase
     {
         private readonly IUnitOfWork uow;
+        private readonly IServiceManager serviceManager;
         private readonly IMapper mapper;
         private readonly UserManager<ApplicationUser> userManager;
 
-        public RepositoryController(IUnitOfWork uow, IMapper mapper, UserManager<ApplicationUser> userManager)
+        public RepositoryController(IServiceManager serviceManager,IMapper mapper, UserManager<ApplicationUser> userManager)
         {
-            this.uow = uow;
+            this.serviceManager = serviceManager;
             this.mapper = mapper;
             this.userManager = userManager;
         }
@@ -36,10 +38,12 @@ namespace Companies.Presemtation.ControllersForTest
             var user = await userManager.GetUserAsync(User);
             if(user is null) throw new ArgumentNullException(nameof(user));
 
-            var employees = await uow.EmployeeRepository.GetEmployeesAsync(id);
+            var response = await serviceManager.EmployeeService.GetEmployeesAsync(id);
 
-            var dtos = mapper.Map<IEnumerable<EmployeeDto>>(employees);
-            return Ok(dtos);
+
+            return response.Success ? 
+                Ok(response.GetOkResult<IEnumerable<EmployeeDto>>()) :
+                ProcessError(response);
         }
     }
 }
