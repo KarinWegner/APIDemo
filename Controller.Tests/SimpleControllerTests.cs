@@ -1,5 +1,6 @@
 using Companies.Presemtation.Controllers;
 using Controller.Tests.Extensions;
+using Controller.Tests.TextFixtures;
 using Domain.Models.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -9,13 +10,19 @@ using System.Security.Claims;
 
 namespace Controller.Tests
 {
-    public class SimpleControllerTests
+    public class SimpleControllerTests : IClassFixture<DatabaseFixture>
     {
+        private readonly DatabaseFixture fixture;
+
+        public SimpleControllerTests(DatabaseFixture fixture)
+        {
+            this.fixture = fixture;
+        }
         [Fact]
         public async void GetCompany_Should_Return400()
         {
             //sut=system under test
-            var sut = new SimpleController();
+            var sut =  fixture.Sut;
 
             var res=await sut.GetCompany();
             var resultType = res.Result as BadRequestObjectResult;
@@ -37,7 +44,7 @@ namespace Controller.Tests
                 HttpContext = httpContext,
             };
 
-            var sut = new SimpleController();
+            var sut = fixture.Sut;
             sut.ControllerContext = controllerContextMock;
 
             var res = await sut.GetCompany();
@@ -52,7 +59,7 @@ namespace Controller.Tests
            // var mockClaimsPrincipal = new Mock<ClaimsPrincipal>();
            // mockClaimsPrincipal.SetupGet(x => x.Identity.IsAuthenticated).Returns(false);
 
-            var sut = new SimpleController();
+            var sut = fixture.Sut;
             sut.SetUserIsAuth(false);
             //sut.ControllerContext = new ControllerContext
             //{
@@ -72,7 +79,7 @@ namespace Controller.Tests
         [Fact]
         public async Task GetCompany_IfAuth_ShouldReturn200OK()
         {
-            var sut = new SimpleController();
+            var sut = fixture.Sut;
             sut.SetUserIsAuth(true);
          
 
