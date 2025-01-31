@@ -7,6 +7,9 @@
     <UserSecretsId>af2d3a6d-33f7-421b-be0f-8abb76321618</UserSecretsId>
   </PropertyGroup>
 
+<PropertyGroup>
+ <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
+</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Bogus" Version="35.6.1" />
