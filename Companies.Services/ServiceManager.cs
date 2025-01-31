@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domain.Contracts;
 using Services.Contracts;
+using Services.Contracts.ContractsForTests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
