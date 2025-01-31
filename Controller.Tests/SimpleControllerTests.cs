@@ -1,4 +1,5 @@
 using Companies.Presemtation.Controllers;
+using Companies.Shared.DTOs;
 using Controller.Tests.Extensions;
 using Controller.Tests.TextFixtures;
 using Domain.Models.Entities;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace Controller.Tests
@@ -88,6 +90,21 @@ namespace Controller.Tests
 
             Assert.IsType<OkObjectResult>(resultType);
         }
+        //[Fact]
+        //public async Task GetCompany_ShouldReturnExpectedCount()
+        //{
+        //    var sut = fixture.Sut;
+        //    var expectedCount = fixture.Context.Companies.Count();
+
+        //    var result = await sut.GetCompany2();
+
+        //    var resultType = result.Result as OkObjectResult;
+
+        //    var res = Assert.IsType<OkObjectResult>(resultType);
+            
+        //    Assert.Equal(expectedCount, (IEnumerable<CompanyDto>res.Value).Count();
+
+        //}
 
     }
 }

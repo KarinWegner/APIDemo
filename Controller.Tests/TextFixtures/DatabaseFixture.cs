@@ -25,18 +25,18 @@ namespace Controller.Tests.TextFixtures
                 cfg.AddProfile<AutoMapperProfile>();
             }));
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
-                .Build();
+            //var configuration = new ConfigurationBuilder()
+            //    .SetBasePath(Directory.GetCurrentDirectory())
+            //    .AddJsonFile("appsettings.json")
+            //    .Build();
 
-            var options = new DbContextOptionsBuilder<CompaniesContext>().UseSqlServer(configuration.GetConnectionString("TestConnection")).Options;
+            var options = new DbContextOptionsBuilder<CompaniesContext>().UseInMemoryDatabase("TestConnection").Options;
 
             Context = new CompaniesContext(options);
 
             Sut = new SimpleController(Context, mapper);
 
-            Context.Database.Migrate();
+            //Context.Database.Migrate();
             SeedData();
 
             Context.SaveChanges();

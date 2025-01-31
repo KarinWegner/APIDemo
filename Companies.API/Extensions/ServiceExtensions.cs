@@ -2,12 +2,14 @@
 using System.Text;
 using Companies.Infrastructure.Repositories;
 using Companies.Services;
+using Companies.Services.ServiceForTest;
 using Domain.Contracts;
 using Domain.Models.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Services.Contracts;
+using Services.Contracts.ContractsForTests;
 
 namespace Companies.API.Extensions;
 
